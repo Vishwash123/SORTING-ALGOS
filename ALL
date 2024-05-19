@@ -1,0 +1,247 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+
+
+int partition(vector<int> &v,int start,int end)
+{
+    int pivot=v[start];
+    int i=start;
+    int j=end;
+    while(i<j)
+    {
+        while(v[i]<=pivot && i<=end-1)
+        {
+            i++;
+        }
+        while(v[j]>pivot && j>=start+1)
+        {
+            j--;
+        }
+
+        if (v[i]<v[j])
+        {
+            swap(v[i],v[j]);
+        }
+    }
+    swap(v[start],v[j]);
+    return j;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+void qs(vector<int> &v,int low,int high)
+{
+    if (low>=high)
+    {
+        return;
+    }
+    int pindex=partition(v,low,high);
+    qs(v,low,pindex-1);
+    qs(v,pindex+1,high);
+}
+
+
+
+
+
+
+
+
+void merge(vector<int> &v,int start,int end)
+{
+    int mid = start + (end - start)/2;
+    int len1 = mid - start + 1;
+    int len2 = end - mid;
+    vector<int> ar1;
+    vector<int> ar2;
+
+    int k=start;
+    for (int i=0;i<len1;i++)
+    {
+        ar1.push_back(v[k++]);
+    }
+
+    int x=mid+1;
+    for (int i=0;i<len2;i++)
+    {
+        ar2.push_back(v[x++]);
+    }
+
+
+    int i=0,j=0;
+    int ele=start;
+    while (i<len1 && j<len2)
+    {
+        if (ar1[i]<ar2[j])
+        {
+            v[ele++]=ar1[i++];
+        }
+        else
+        {
+            v[ele++]=ar2[j++];
+        }
+    }
+
+    while (i<len1)
+    {
+        v[ele++]=ar1[i++];
+    }
+    while(j<len2)
+    {
+        v[ele++]=ar2[j++];
+    }
+}
+
+
+
+
+
+
+
+
+void ms(vector<int> &v,int low,int high)
+{
+    if (low>=high)
+    {
+        return;
+    }
+    int mid = low + (high - low)/2;
+    ms(v,low,mid);
+    ms(v,mid+1,high);
+    merge(v,low,high);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main() {
+
+vector<int> v={10,2,6,4,9,7,8,3,1,5};
+int n=v.size();
+//BUBBLE SORT
+//for (int i=0;i<n;i++)
+//{
+//    for (int j=0;j<n-i-1;j++)
+//    {
+//        if (v[j]>v[j+1])
+//        {
+//            swap(v[j],v[j+1]);
+//        }
+//    }
+//
+//}
+
+
+
+
+
+//INSERTION SORT : Compare Shift and then place
+//for (int i=1;i<n;i++)
+//{
+//    int temp=v[i];
+//    int j=i-1;
+//    for (;j>=0;j--)
+//    {
+//
+//        if (v[j]>temp)
+//        {
+//             v[j+1]=v[j];
+//        }
+//        else
+//        {
+//            break;
+//        }
+//    }
+//    v[j+1]=temp;
+//}
+
+
+
+
+
+
+//SELECTION SORT  : set min element to current element and mindindex to current index then find the minimum element and its index in the rest of the array
+// after finding in each round swap the first element of that range and the minimum element
+//basically in every round the minimum element gets placed in the first position effectivelyy sorting the array by the time the last round finishes
+//for (int i=0;i<n;i++)
+//{
+//    int min=v[i];
+//    int mini=i;
+//
+//    for (int j=i+1;j<n;j++)
+//    {
+//        if (min>v[j])
+//        {
+//            min=v[j];
+//            mini=j;
+//        }
+//    }
+//    swap(v[mini],v[i]);
+//
+//}
+
+
+
+//QUICK SORT : Select a pivot and place it in its correct place for this we need to take the pivot then based on it we find elemetns larger than it
+//from the left side and larger than it from the roght side and swap them until our left and right pointers cross at this point the elements
+//smaller than the pivot will be on one side and greater ones will be on another. Then just swap the pivot with the last element of the smaller side
+//to put it in itd correct position
+//qs(v,0,v.size()-1);
+
+
+
+//MERGE SORT: Find the mid element  and then sort from 0 to mid-1 and mid+1 to end of array then merge both sides
+//the main gyst of the algorithm lies in the merge function in this function we copy the elements of both sides into spearate arrays and then use the merge
+//two sorted arrays algorithm to merge them in sorted order. You need a mid element for this then using it find the lengths of both arrays
+//copy the elements from main array to those arrays in the respective ranges and then use hte merginf algorihtm where you add the smaller element first
+//then finally check for an edge case that whether or not one of the arrays were not traversed completely
+ms(v,0,v.size()-1);
+
+
+
+
+
+
+//for (auto x:v)
+//{
+//    cout<<x<<" ";
+//}
+
+//string x="40";
+//int news=stoi(x);
+//cout<<news;
+
+
+//vector<int> arr={23,1,56,34,2900};
+//qs(arr,0,arr.size()-1);
+//for(auto x:arr)
+//{
+//    cout<<x<<endl;
+//}
+
+
+
+}
